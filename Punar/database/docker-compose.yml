@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  # Production-like database (V1 state)
+  postgres:
+    image: postgres:16-alpine
+    container_name: punar_postgres
+    environment:
+      POSTGRES_USER: punar
+      POSTGRES_PASSWORD: punar
+      POSTGRES_DB: payment_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/001_v1_schema.sql:/docker-entrypoint-initdb.d/001_v1_schema.sql
+      - ./seed/seed.sql:/docker-entrypoint-initdb.d/002_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U punar -d payment_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Ephemeral rehearsal database (cloned before rehearsal, discarded after)
+  postgres_rehearsal:
+    image: postgres:16-alpine
+    container_name: punar_postgres_rehearsal
+    environment:
+      POSTGRES_USER: punar
+      POSTGRES_PASSWORD: punar
+      POSTGRES_DB: payment_service_rehearsal
+    ports:
+      - "5433:5432"
+    volumes:
+      - rehearsal_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U punar -d payment_service_rehearsal"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  rehearsal_data:

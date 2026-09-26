@@ -1,0 +1,19 @@
+{
+  "name": "punar",
+  "version": "0.1.0",
+  "description": "Pre-deployment rollback compatibility platform — IBM BOB 2.0 Hackathon",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "demo-service/v1",
+    "demo-service/v2"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "demo": "powershell -ExecutionPolicy Bypass -File scripts/run-demo.ps1",
+    "reset": "powershell -ExecutionPolicy Bypass -File scripts/reset-demo.ps1",
+    "rehearsal": "powershell -ExecutionPolicy Bypass -File scripts/run-rehearsal.ps1"
+  }
+}
