@@ -1,0 +1,10 @@
+{
+  "description": "Automates safe software deployments by creating recovery snapshots, monitoring health, detecting failures, and restoring stable versions to ensure reliable production.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
